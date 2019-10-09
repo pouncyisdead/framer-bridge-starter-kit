@@ -1,16 +1,13 @@
 ---
-on: push
+on:
+  push:
+    branches: master
 name: Build and publish
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-
-      - name: Branch filter
-        uses: actions/bin/filter@master
-        with:
-          args: branch master
 
       - name: Build
         uses: framer/bridge@master
