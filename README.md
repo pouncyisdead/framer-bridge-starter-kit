@@ -46,18 +46,15 @@ If you have access to the [GitHub actions beta](https://github.com/features/acti
 1. Modify the `args` property in the `Build` and `Publish` actions inside [`.github/workflows/publish.yml`](/.github/workflows/publish.yml) with the path of your Framer package, eg:
 
    ```yaml
-   on: push
+   on:
+     push:
+       branches: master
    name: Build and publish
    jobs:
      publish:
        runs-on: ubuntu-latest
        steps:
          - uses: actions/checkout@master
-
-         - name: Branch filter
-           uses: actions/bin/filter@master
-           with:
-             args: branch master
 
          - name: Build
            uses: framer/bridge@master
@@ -71,7 +68,8 @@ If you have access to the [GitHub actions beta](https://github.com/features/acti
            with:
              args: publish design-system.framerfx --yes
    ```
-1. In GitHub, navigate to the forked repository, and under your repository name, click *Settings*. Then, click *Secrets* in the left sidebar, and add the `FRAMER_TOKEN` secret.
+
+1. In GitHub, navigate to the forked repository, and under your repository name, click _Settings_. Then, click _Secrets_ in the left sidebar, and add the `FRAMER_TOKEN` secret.
 1. Push a commit to the `master` branch and watch as the GitHub actions pick up the commit, build the package, publish it to the [Framer Store](https://store.framer.com).
 
 ## 🚚 Using CI
@@ -122,25 +120,25 @@ As an example of integrating `framer-cli` with an external CI service, there is 
 1. Update the [`.travis.yml`](./.travis.yml) with your project path, e.g.:
 
    ```yml
-    language: node_js
-    node_js:
-      - 10.15.3
+   language: node_js
+   node_js:
+     - 10.15.3
 
-    jobs:
-      include:
-        - stage: build
-          name: "Build"
-          if: branch = master
-          script:
-            - yarn
-            - npx framer-cli build <your-project-path.framerfx>
+   jobs:
+     include:
+       - stage: build
+         name: "Build"
+         if: branch = master
+         script:
+           - yarn
+           - npx framer-cli build <your-project-path.framerfx>
 
-        - stage: publish
-          name: "Publish"
-          if: branch = master
-          script:
-            - yarn
-            - npx framer-cli publish <your-project-path.framerfx> --yes
+       - stage: publish
+         name: "Publish"
+         if: branch = master
+         script:
+           - yarn
+           - npx framer-cli publish <your-project-path.framerfx> --yes
    ```
 
 1. Publish a brand new version of your package to the [Framer store](https://store.framer.com) by pushing a commit on the `master` branch.
